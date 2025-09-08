@@ -67,7 +67,7 @@ app.get('/api/health', (req, res) => {
   });
 
   // Serve static files (built by vite during build process)
-  const distPath = path.resolve(import.meta.dirname, "public");
+  const distPath = path.resolve(__dirname, "public");
   
   if (fs.existsSync(distPath)) {
     app.use(express.static(distPath));
