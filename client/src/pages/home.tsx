@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { Link } from "wouter";
 import { type Meal } from "@shared/schema";
-import Header from "@/components/header";
-import DayNavigation from "@/components/day-navigation";
-import FiltersSidebar from "@/components/filters-sidebar";
+import { useAuth } from "@/hooks/useAuth";
+import Sidebar from "@/components/sidebar";
 import MealCard from "@/components/meal-card";
 import MealDetailModal from "@/components/meal-detail-modal";
+import { Button } from "@/components/ui/button";
+import { Settings } from "lucide-react";
 
 export interface Filters {
   search: string;
@@ -17,20 +19,23 @@ export default function Home() {
   const [selectedDay, setSelectedDay] = useState("Monday");
   const [selectedMeal, setSelectedMeal] = useState<Meal | null>(null);
   const [showMealDetail, setShowMealDetail] = useState(false);
+  const [search, setSearch] = useState("");
   const [filters, setFilters] = useState<Filters>({
     search: "",
     priceRanges: [],
     dietaryOptions: [],
   });
 
+  const { user } = useAuth();
+
   const { data: meals = [], isLoading } = useQuery<Meal[]>({
     queryKey: ["/api/meals", selectedDay],
   });
 
   const filteredMeals = meals.filter((meal) => {
-    // Search filter
-    if (filters.search && !meal.name.toLowerCase().includes(filters.search.toLowerCase()) &&
-        !meal.description.toLowerCase().includes(filters.search.toLowerCase())) {
+    // Search filter - using search state instead of filters.search
+    if (search && !meal.name.toLowerCase().includes(search.toLowerCase()) &&
+        !meal.description.toLowerCase().includes(search.toLowerCase())) {
       return false;
     }
 
@@ -81,30 +86,48 @@ export default function Home() {
   };
 
   return (
-    <div className="bg-background min-h-screen">
-      <Header 
-        search={filters.search} 
-        onSearchChange={(search) => setFilters(prev => ({ ...prev, search }))}
-      />
-      
-      <DayNavigation 
-        selectedDay={selectedDay} 
-        onDayChange={setSelectedDay} 
+    <div className="bg-background min-h-screen flex">
+      <Sidebar
+        selectedDay={selectedDay}
+        onDayChange={setSelectedDay}
+        search={search}
+        onSearchChange={setSearch}
+        filters={filters}
+        onFiltersChange={setFilters}
       />
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex flex-col lg:flex-row gap-8">
-          <FiltersSidebar 
-            filters={filters}
-            onFiltersChange={setFilters}
-          />
+      <main className="flex-1 overflow-auto">
+        {/* Header */}
+        <header className="bg-card border-b border-border sticky top-0 z-10">
+          <div className="px-4 sm:px-6 lg:px-8">
+            <div className="flex items-center justify-between h-16">
+              <div className="lg:hidden">
+                <h1 className="text-lg font-bold">Campus Eats</h1>
+              </div>
+              <div className="hidden lg:block">
+                <h1 className="text-xl font-bold">{selectedDay}'s Menu</h1>
+              </div>
+              <div className="flex items-center space-x-4">
+                <span className="text-sm text-muted-foreground" data-testid="meals-count">
+                  {filteredMeals.length} meals available
+                </span>
+                {user && (
+                  <Link href="/admin">
+                    <Button variant="outline" size="sm">
+                      <Settings className="h-4 w-4 mr-2" />
+                      Admin
+                    </Button>
+                  </Link>
+                )}
+              </div>
+            </div>
+          </div>
+        </header>
 
-          <section className="flex-1">
-            <div className="flex items-center justify-between mb-6">
+        <div className="px-4 sm:px-6 lg:px-8 py-8">
+          <section className="w-full">
+            <div className="lg:hidden mb-6">
               <h2 className="text-2xl font-bold">{selectedDay}'s Menu</h2>
-              <span className="text-muted-foreground" data-testid="meals-count">
-                {filteredMeals.length} meals available
-              </span>
             </div>
 
             {isLoading ? (
