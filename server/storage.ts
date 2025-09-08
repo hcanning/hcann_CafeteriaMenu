@@ -180,14 +180,36 @@ export class MemStorage implements IStorage {
     const days = ["Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
     days.forEach(day => {
       mealsData.forEach(meal => {
-        const dayMeal = { ...meal, dayOfWeek: day };
+        const dayMeal = { 
+          ...meal, 
+          dayOfWeek: day,
+          isVegetarian: meal.isVegetarian || false,
+          isVegan: meal.isVegan || false,
+          isGlutenFree: meal.isGlutenFree || false,
+          isDairyFree: meal.isDairyFree || false,
+          isKeto: meal.isKeto || false,
+          isLowSodium: meal.isLowSodium || false,
+          isPescatarian: meal.isPescatarian || false,
+          isSpicy: meal.isSpicy || false,
+        };
         mealsData.push(dayMeal);
       });
     });
 
     mealsData.forEach(meal => {
       const id = randomUUID();
-      const fullMeal: Meal = { ...meal, id };
+      const fullMeal: Meal = { 
+        ...meal, 
+        id,
+        isVegetarian: meal.isVegetarian || false,
+        isVegan: meal.isVegan || false,
+        isGlutenFree: meal.isGlutenFree || false,
+        isDairyFree: meal.isDairyFree || false,
+        isKeto: meal.isKeto || false,
+        isLowSodium: meal.isLowSodium || false,
+        isPescatarian: meal.isPescatarian || false,
+        isSpicy: meal.isSpicy || false,
+      };
       this.meals.set(id, fullMeal);
     });
   }
