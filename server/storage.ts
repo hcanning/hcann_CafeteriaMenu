@@ -1,18 +1,81 @@
-import { type Meal, type InsertMeal } from "@shared/schema";
+import { type Meal, type InsertMeal, type User, type InsertUser, meals, users } from "@shared/schema";
+import { db } from "./db";
+import { eq } from "drizzle-orm";
 import { randomUUID } from "crypto";
 
 export interface IStorage {
-  getUser(id: string): Promise<any | undefined>;
-  getUserByUsername(username: string): Promise<any | undefined>;
-  createUser(user: any): Promise<any>;
+  getUser(id: string): Promise<User | undefined>;
+  getUserByUsername(username: string): Promise<User | undefined>;
+  createUser(user: InsertUser): Promise<User>;
   getMealsByDay(dayOfWeek: string): Promise<Meal[]>;
   getAllMeals(): Promise<Meal[]>;
   getMealById(id: string): Promise<Meal | undefined>;
   createMeal(meal: InsertMeal): Promise<Meal>;
+  updateMeal(id: string, meal: Partial<InsertMeal>): Promise<Meal | undefined>;
+  deleteMeal(id: string): Promise<boolean>;
 }
 
+export class DatabaseStorage implements IStorage {
+  async getUser(id: string): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.id, id));
+    return user || undefined;
+  }
+
+  async getUserByUsername(username: string): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.username, username));
+    return user || undefined;
+  }
+
+  async createUser(insertUser: InsertUser): Promise<User> {
+    const [user] = await db
+      .insert(users)
+      .values(insertUser)
+      .returning();
+    return user;
+  }
+
+  async getMealsByDay(dayOfWeek: string): Promise<Meal[]> {
+    return await db.select().from(meals).where(eq(meals.dayOfWeek, dayOfWeek));
+  }
+
+  async getAllMeals(): Promise<Meal[]> {
+    return await db.select().from(meals);
+  }
+
+  async getMealById(id: string): Promise<Meal | undefined> {
+    const [meal] = await db.select().from(meals).where(eq(meals.id, id));
+    return meal || undefined;
+  }
+
+  async createMeal(insertMeal: InsertMeal): Promise<Meal> {
+    const [meal] = await db
+      .insert(meals)
+      .values(insertMeal)
+      .returning();
+    return meal;
+  }
+
+  async updateMeal(id: string, updateData: Partial<InsertMeal>): Promise<Meal | undefined> {
+    const [meal] = await db
+      .update(meals)
+      .set(updateData)
+      .where(eq(meals.id, id))
+      .returning();
+    return meal || undefined;
+  }
+
+  async deleteMeal(id: string): Promise<boolean> {
+    const result = await db
+      .delete(meals)
+      .where(eq(meals.id, id))
+      .returning();
+    return result.length > 0;
+  }
+}
+
+// Legacy MemStorage for development
 export class MemStorage implements IStorage {
-  private users: Map<string, any>;
+  private users: Map<string, User>;
   private meals: Map<string, Meal>;
 
   constructor() {
@@ -214,21 +277,39 @@ export class MemStorage implements IStorage {
     });
   }
 
-  async getUser(id: string): Promise<any | undefined> {
+  async getUser(id: string): Promise<User | undefined> {
     return this.users.get(id);
   }
 
-  async getUserByUsername(username: string): Promise<any | undefined> {
+  async getUserByUsername(username: string): Promise<User | undefined> {
     return Array.from(this.users.values()).find(
       (user) => user.username === username,
     );
   }
 
-  async createUser(insertUser: any): Promise<any> {
+  async createUser(insertUser: InsertUser): Promise<User> {
     const id = randomUUID();
-    const user: any = { ...insertUser, id };
+    const user: User = { 
+      ...insertUser, 
+      id, 
+      createdAt: new Date(), 
+      updatedAt: new Date() 
+    };
     this.users.set(id, user);
     return user;
+  }
+
+  async updateMeal(id: string, updateData: Partial<InsertMeal>): Promise<Meal | undefined> {
+    const existingMeal = this.meals.get(id);
+    if (!existingMeal) return undefined;
+    
+    const updatedMeal: Meal = { ...existingMeal, ...updateData };
+    this.meals.set(id, updatedMeal);
+    return updatedMeal;
+  }
+
+  async deleteMeal(id: string): Promise<boolean> {
+    return this.meals.delete(id);
   }
 
   async getMealsByDay(dayOfWeek: string): Promise<Meal[]> {
@@ -247,10 +328,24 @@ export class MemStorage implements IStorage {
 
   async createMeal(insertMeal: InsertMeal): Promise<Meal> {
     const id = randomUUID();
-    const meal: Meal = { ...insertMeal, id };
+    const meal: Meal = { 
+      ...insertMeal, 
+      id,
+      isVegetarian: insertMeal.isVegetarian || false,
+      isVegan: insertMeal.isVegan || false,
+      isGlutenFree: insertMeal.isGlutenFree || false,
+      isDairyFree: insertMeal.isDairyFree || false,
+      isKeto: insertMeal.isKeto || false,
+      isLowSodium: insertMeal.isLowSodium || false,
+      isPescatarian: insertMeal.isPescatarian || false,
+      isSpicy: insertMeal.isSpicy || false,
+    };
     this.meals.set(id, meal);
     return meal;
   }
 }
 
-export const storage = new MemStorage();
+// Use DatabaseStorage in production, MemStorage for development
+export const storage = process.env.NODE_ENV === 'production' 
+  ? new DatabaseStorage() 
+  : new MemStorage();
