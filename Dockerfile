@@ -46,8 +46,8 @@ ENV PORT=3000
 EXPOSE 3000
 
 # Minimal health check that always passes (for Coolify template compatibility)
-HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
-  CMD exit 0
+# HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+#   CMD exit 0
 
 # Start the application
 CMD ["npm", "start"]
