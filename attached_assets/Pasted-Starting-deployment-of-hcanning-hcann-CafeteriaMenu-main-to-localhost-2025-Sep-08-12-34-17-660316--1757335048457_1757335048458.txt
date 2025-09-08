@@ -1,0 +1,616 @@
+Starting deployment of hcanning/hcann_CafeteriaMenu:main to localhost.
+2025-Sep-08 12:34:17.660316
+Preparing container with helper image: ghcr.io/coollabsio/coolify-helper:1.0.10.
+2025-Sep-08 12:34:17.785991
+[CMD]: docker stop --time=30 ogok0skg8go0g8go4cwossw8
+2025-Sep-08 12:34:17.785991
+Flag --time has been deprecated, use --timeout instead
+2025-Sep-08 12:34:17.791741
+Error response from daemon: No such container: ogok0skg8go0g8go4cwossw8
+2025-Sep-08 12:34:17.948739
+[CMD]: docker rm -f ogok0skg8go0g8go4cwossw8
+2025-Sep-08 12:34:17.948739
+Error response from daemon: No such container: ogok0skg8go0g8go4cwossw8
+2025-Sep-08 12:34:18.551304
+[CMD]: docker run -d --network coolify --name ogok0skg8go0g8go4cwossw8 --rm -v /var/run/docker.sock:/var/run/docker.sock ghcr.io/coollabsio/coolify-helper:1.0.10
+2025-Sep-08 12:34:18.551304
+4df440f1c16cf894cbe0a119ec3dc8c35cfac5a8b52a11649870064628b47155
+2025-Sep-08 12:34:19.617394
+[CMD]: docker exec ogok0skg8go0g8go4cwossw8 bash -c 'GIT_SSH_COMMAND="ssh -o ConnectTimeout=30 -p 22 -o Port=22 -o LogLevel=ERROR -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" git ls-remote https://github.com/hcanning/hcann_CafeteriaMenu refs/heads/main'
+2025-Sep-08 12:34:19.617394
+3a7596c7425157fdb90e11abbf0a939b5826ceec	refs/heads/main
+2025-Sep-08 12:34:19.637649
+----------------------------------------
+2025-Sep-08 12:34:19.641584
+Importing hcanning/hcann_CafeteriaMenu:main (commit sha HEAD) to /artifacts/ogok0skg8go0g8go4cwossw8.
+2025-Sep-08 12:34:19.828725
+[CMD]: docker exec ogok0skg8go0g8go4cwossw8 bash -c 'git clone --depth=1 --recurse-submodules --shallow-submodules -b 'main' 'https://github.com/hcanning/hcann_CafeteriaMenu' '/artifacts/ogok0skg8go0g8go4cwossw8' && cd /artifacts/ogok0skg8go0g8go4cwossw8 && if [ -f .gitmodules ]; then sed -i "s#git@\(.*\):#https://\1/#g" /artifacts/ogok0skg8go0g8go4cwossw8/.gitmodules || true && git submodule sync && GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" git submodule update --init --recursive --depth=1; fi && cd /artifacts/ogok0skg8go0g8go4cwossw8 && GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" git lfs pull'
+2025-Sep-08 12:34:19.828725
+Cloning into '/artifacts/ogok0skg8go0g8go4cwossw8'...
+2025-Sep-08 12:34:20.996883
+[CMD]: docker exec ogok0skg8go0g8go4cwossw8 bash -c 'cd /artifacts/ogok0skg8go0g8go4cwossw8 && git log -1 3a7596c7425157fdb90e11abbf0a939b5826ceec --pretty=%B'
+2025-Sep-08 12:34:20.996883
+Refine Dockerfile to improve build process
+2025-Sep-08 12:34:21.004883
+Removes a redundant copy instruction from the Dockerfile's builder stage and updates it to use a non-root user for better security and resource management during the production build.
+2025-Sep-08 12:34:21.004883
+2025-Sep-08 12:34:21.004883
+Replit-Commit-Author: Agent
+2025-Sep-08 12:34:21.004883
+Replit-Commit-Session-Id: fdcc5dc1-0458-49e9-9d8f-09903407e9e9
+2025-Sep-08 12:34:21.004883
+Replit-Commit-Checkpoint-Type: full_checkpoint
+2025-Sep-08 12:34:21.004883
+Replit-Commit-Screenshot-Url: https://storage.googleapis.com/screenshot-production-us-central1/af39b827-5cc3-470b-9464-a13e5c9b8e25/fdcc5dc1-0458-49e9-9d8f-09903407e9e9/bLq2sKX
+2025-Sep-08 12:34:21.155372
+Image not found (vccock4swgckwkwgk8gcsgw0:3a7596c7425157fdb90e11abbf0a939b5826ceec). Building new image.
+2025-Sep-08 12:34:22.167791
+[CMD]: docker exec ogok0skg8go0g8go4cwossw8 bash -c 'cat /artifacts/ogok0skg8go0g8go4cwossw8/Dockerfile'
+2025-Sep-08 12:34:22.167791
+# Multi-stage build for full-stack Node.js app
+2025-Sep-08 12:34:22.167791
+FROM node:18-alpine AS builder
+2025-Sep-08 12:34:22.167791
+2025-Sep-08 12:34:22.167791
+# Set working directory
+2025-Sep-08 12:34:22.167791
+WORKDIR /app
+2025-Sep-08 12:34:22.167791
+2025-Sep-08 12:34:22.167791
+# Copy package files
+2025-Sep-08 12:34:22.167791
+COPY package*.json ./
+2025-Sep-08 12:34:22.167791
+2025-Sep-08 12:34:22.167791
+# Install dependencies
+2025-Sep-08 12:34:22.167791
+RUN npm ci
+2025-Sep-08 12:34:22.167791
+2025-Sep-08 12:34:22.167791
+# Copy source code
+2025-Sep-08 12:34:22.167791
+COPY . .
+2025-Sep-08 12:34:22.167791
+2025-Sep-08 12:34:22.167791
+# Build the application (this builds both frontend and backend)
+2025-Sep-08 12:34:22.167791
+RUN npm run build
+2025-Sep-08 12:34:22.167791
+2025-Sep-08 12:34:22.167791
+# Production stage
+2025-Sep-08 12:34:22.167791
+FROM node:18-alpine AS production
+2025-Sep-08 12:34:22.167791
+2025-Sep-08 12:34:22.167791
+# Set working directory
+2025-Sep-08 12:34:22.167791
+WORKDIR /app
+2025-Sep-08 12:34:22.167791
+2025-Sep-08 12:34:22.167791
+# Copy package files for production dependencies
+2025-Sep-08 12:34:22.167791
+COPY package*.json ./
+2025-Sep-08 12:34:22.167791
+2025-Sep-08 12:34:22.167791
+# Install only production dependencies
+2025-Sep-08 12:34:22.167791
+RUN npm ci --only=production && npm cache clean --force
+2025-Sep-08 12:34:22.167791
+2025-Sep-08 12:34:22.167791
+# Copy built application from builder stage
+2025-Sep-08 12:34:22.167791
+COPY --from=builder /app/dist ./dist
+2025-Sep-08 12:34:22.167791
+2025-Sep-08 12:34:22.167791
+# Create a non-root user
+2025-Sep-08 12:34:22.167791
+RUN addgroup -g 1001 -S nodejs && adduser -S nodejs -u 1001
+2025-Sep-08 12:34:22.167791
+2025-Sep-08 12:34:22.167791
+# Change ownership to nodejs user
+2025-Sep-08 12:34:22.167791
+RUN chown -R nodejs:nodejs /app
+2025-Sep-08 12:34:22.167791
+USER nodejs
+2025-Sep-08 12:34:22.167791
+2025-Sep-08 12:34:22.167791
+# Set environment variables
+2025-Sep-08 12:34:22.167791
+ENV NODE_ENV=production
+2025-Sep-08 12:34:22.167791
+ENV PORT=3000
+2025-Sep-08 12:34:22.167791
+2025-Sep-08 12:34:22.167791
+# Expose port
+2025-Sep-08 12:34:22.167791
+EXPOSE 3000
+2025-Sep-08 12:34:22.167791
+2025-Sep-08 12:34:22.167791
+# Health check
+2025-Sep-08 12:34:22.167791
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+2025-Sep-08 12:34:22.167791
+CMD node -e "require('http').get('http://localhost:3000/api/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) })"
+2025-Sep-08 12:34:22.167791
+2025-Sep-08 12:34:22.167791
+# Start the application
+2025-Sep-08 12:34:22.167791
+CMD ["npm", "start"]
+2025-Sep-08 12:34:22.561753
+[CMD]: docker exec ogok0skg8go0g8go4cwossw8 bash -c 'cat /artifacts/ogok0skg8go0g8go4cwossw8/Dockerfile'
+2025-Sep-08 12:34:22.561753
+# Multi-stage build for full-stack Node.js app
+2025-Sep-08 12:34:22.561753
+FROM node:18-alpine AS builder
+2025-Sep-08 12:34:22.561753
+2025-Sep-08 12:34:22.561753
+# Set working directory
+2025-Sep-08 12:34:22.561753
+WORKDIR /app
+2025-Sep-08 12:34:22.561753
+2025-Sep-08 12:34:22.561753
+# Copy package files
+2025-Sep-08 12:34:22.561753
+COPY package*.json ./
+2025-Sep-08 12:34:22.561753
+2025-Sep-08 12:34:22.561753
+# Install dependencies
+2025-Sep-08 12:34:22.561753
+RUN npm ci
+2025-Sep-08 12:34:22.561753
+2025-Sep-08 12:34:22.561753
+# Copy source code
+2025-Sep-08 12:34:22.561753
+COPY . .
+2025-Sep-08 12:34:22.561753
+2025-Sep-08 12:34:22.561753
+# Build the application (this builds both frontend and backend)
+2025-Sep-08 12:34:22.561753
+RUN npm run build
+2025-Sep-08 12:34:22.561753
+2025-Sep-08 12:34:22.561753
+# Production stage
+2025-Sep-08 12:34:22.561753
+FROM node:18-alpine AS production
+2025-Sep-08 12:34:22.561753
+2025-Sep-08 12:34:22.561753
+# Set working directory
+2025-Sep-08 12:34:22.561753
+WORKDIR /app
+2025-Sep-08 12:34:22.561753
+2025-Sep-08 12:34:22.561753
+# Copy package files for production dependencies
+2025-Sep-08 12:34:22.561753
+COPY package*.json ./
+2025-Sep-08 12:34:22.561753
+2025-Sep-08 12:34:22.561753
+# Install only production dependencies
+2025-Sep-08 12:34:22.561753
+RUN npm ci --only=production && npm cache clean --force
+2025-Sep-08 12:34:22.561753
+2025-Sep-08 12:34:22.561753
+# Copy built application from builder stage
+2025-Sep-08 12:34:22.561753
+COPY --from=builder /app/dist ./dist
+2025-Sep-08 12:34:22.561753
+2025-Sep-08 12:34:22.561753
+# Create a non-root user
+2025-Sep-08 12:34:22.561753
+RUN addgroup -g 1001 -S nodejs && adduser -S nodejs -u 1001
+2025-Sep-08 12:34:22.561753
+2025-Sep-08 12:34:22.561753
+# Change ownership to nodejs user
+2025-Sep-08 12:34:22.561753
+RUN chown -R nodejs:nodejs /app
+2025-Sep-08 12:34:22.561753
+USER nodejs
+2025-Sep-08 12:34:22.561753
+2025-Sep-08 12:34:22.561753
+# Set environment variables
+2025-Sep-08 12:34:22.561753
+ENV NODE_ENV=production
+2025-Sep-08 12:34:22.561753
+ENV PORT=3000
+2025-Sep-08 12:34:22.561753
+2025-Sep-08 12:34:22.561753
+# Expose port
+2025-Sep-08 12:34:22.561753
+EXPOSE 3000
+2025-Sep-08 12:34:22.561753
+2025-Sep-08 12:34:22.561753
+# Health check
+2025-Sep-08 12:34:22.561753
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+2025-Sep-08 12:34:22.561753
+CMD node -e "require('http').get('http://localhost:3000/api/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) })"
+2025-Sep-08 12:34:22.561753
+2025-Sep-08 12:34:22.561753
+# Start the application
+2025-Sep-08 12:34:22.561753
+CMD ["npm", "start"]
+2025-Sep-08 12:34:22.751871
+----------------------------------------
+2025-Sep-08 12:34:22.757508
+Building docker image started.
+2025-Sep-08 12:34:22.763308
+To check the current progress, click on Show Debug Logs.
+2025-Sep-08 12:34:23.148894
+[CMD]: docker exec ogok0skg8go0g8go4cwossw8 bash -c 'cat /artifacts/build.sh'
+2025-Sep-08 12:34:23.148894
+docker build  --add-host coolify:10.0.1.5 --add-host coolify-db:10.0.1.4 --add-host coolify-realtime:10.0.1.2 --add-host coolify-redis:10.0.1.3 --add-host pw8k48cog8cg8c4o84wo0cgo:10.0.1.7 --network host -f /artifacts/ogok0skg8go0g8go4cwossw8/Dockerfile --build-arg SOURCE_COMMIT='3a7596c7425157fdb90e11abbf0a939b5826ceec' --build-arg 'COOLIFY_URL=http://vccock4swgckwkwgk8gcsgw0.159.65.106.112.sslip.io' --build-arg 'COOLIFY_FQDN=vccock4swgckwkwgk8gcsgw0.159.65.106.112.sslip.io' --build-arg 'COOLIFY_BRANCH=main' --build-arg 'COOLIFY_RESOURCE_UUID=vccock4swgckwkwgk8gcsgw0' --build-arg 'COOLIFY_CONTAINER_NAME=vccock4swgckwkwgk8gcsgw0-123416759025' --progress plain -t vccock4swgckwkwgk8gcsgw0:3a7596c7425157fdb90e11abbf0a939b5826ceec /artifacts/ogok0skg8go0g8go4cwossw8
+2025-Sep-08 12:34:24.037818
+[CMD]: docker exec ogok0skg8go0g8go4cwossw8 bash -c 'bash /artifacts/build.sh'
+2025-Sep-08 12:34:24.037818
+#0 building with "default" instance using docker driver
+2025-Sep-08 12:34:24.037818
+2025-Sep-08 12:34:24.037818
+#1 [internal] load build definition from Dockerfile
+2025-Sep-08 12:34:24.037818
+#1 transferring dockerfile: 1.21kB done
+2025-Sep-08 12:34:24.037818
+#1 DONE 0.1s
+2025-Sep-08 12:34:24.037818
+2025-Sep-08 12:34:24.037818
+#2 [internal] load metadata for docker.io/library/node:18-alpine
+2025-Sep-08 12:34:24.191552
+#2 DONE 0.3s
+2025-Sep-08 12:34:24.328047
+#3 [internal] load .dockerignore
+2025-Sep-08 12:34:24.328047
+#3 transferring context: 956B done
+2025-Sep-08 12:34:24.328047
+#3 DONE 0.1s
+2025-Sep-08 12:34:24.328047
+2025-Sep-08 12:34:24.328047
+#4 [builder 1/6] FROM docker.io/library/node:18-alpine@sha256:8d6421d663b4c28fd3ebc498332f249011d118945588d0a35cb9bc4b8ca09d9e
+2025-Sep-08 12:34:24.328047
+#4 DONE 0.0s
+2025-Sep-08 12:34:24.328047
+2025-Sep-08 12:34:24.328047
+#5 [internal] load build context
+2025-Sep-08 12:34:24.493614
+#5 transferring context: 628.37kB 0.0s done
+2025-Sep-08 12:34:24.493614
+#5 DONE 0.1s
+2025-Sep-08 12:34:24.493614
+2025-Sep-08 12:34:24.493614
+#6 [builder 2/6] WORKDIR /app
+2025-Sep-08 12:34:24.493614
+#6 CACHED
+2025-Sep-08 12:34:24.493614
+2025-Sep-08 12:34:24.493614
+#7 [builder 3/6] COPY package*.json ./
+2025-Sep-08 12:34:24.493614
+#7 CACHED
+2025-Sep-08 12:34:24.493614
+2025-Sep-08 12:34:24.493614
+#8 [production 4/7] RUN npm ci --only=production && npm cache clean --force
+2025-Sep-08 12:34:24.493614
+#8 CACHED
+2025-Sep-08 12:34:24.493614
+2025-Sep-08 12:34:24.493614
+#9 [builder 4/6] RUN npm ci
+2025-Sep-08 12:34:24.493614
+#9 CACHED
+2025-Sep-08 12:34:24.493614
+2025-Sep-08 12:34:24.493614
+#10 [builder 5/6] COPY . .
+2025-Sep-08 12:34:24.493614
+#10 DONE 0.1s
+2025-Sep-08 12:34:24.650825
+#11 [builder 6/6] RUN npm run build
+2025-Sep-08 12:34:24.989627
+#11 0.490
+2025-Sep-08 12:34:24.989627
+#11 0.490 > rest-express@1.0.0 build
+2025-Sep-08 12:34:24.989627
+#11 0.490 > vite build && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist
+2025-Sep-08 12:34:24.989627
+#11 0.490
+2025-Sep-08 12:34:25.391868
+#11 0.892 vite v5.4.19 building for production...
+2025-Sep-08 12:34:25.508649
+#11 1.009 transforming...
+2025-Sep-08 12:34:26.158484
+#11 1.659 Browserslist: browsers data (caniuse-lite) is 11 months old. Please run:
+2025-Sep-08 12:34:26.158484
+#11 1.659   npx update-browserslist-db@latest
+2025-Sep-08 12:34:26.158484
+#11 1.659   Why you should do it regularly: https://github.com/browserslist/update-db#readme
+2025-Sep-08 12:34:34.161527
+#11 9.662 ✓ 1681 modules transformed.
+2025-Sep-08 12:34:34.549767
+#11 10.05 rendering chunks...
+2025-Sep-08 12:34:34.734696
+#11 10.06 computing gzip size...
+2025-Sep-08 12:34:34.753682
+#11 10.08 ../dist/public/index.html                   2.20 kB │ gzip:  0.86 kB
+2025-Sep-08 12:34:34.753682
+#11 10.08 ../dist/public/assets/index-BiAyz0TE.css   59.04 kB │ gzip: 10.52 kB
+2025-Sep-08 12:34:34.753682
+#11 10.08 ../dist/public/assets/index-CHXP3cLk.js   312.82 kB │ gzip: 98.71 kB
+2025-Sep-08 12:34:34.753682
+#11 10.08 ✓ built in 9.16s
+2025-Sep-08 12:34:34.813286
+#11 10.31
+2025-Sep-08 12:34:34.813286
+#11 10.31   dist/index.js  24.0kb
+2025-Sep-08 12:34:34.813286
+#11 10.31
+2025-Sep-08 12:34:34.813286
+#11 10.31 ⚡ Done in 63ms
+2025-Sep-08 12:34:35.039660
+#11 DONE 10.4s
+2025-Sep-08 12:34:35.680711
+#12 [production 5/7] COPY --from=builder /app/dist ./dist
+2025-Sep-08 12:34:35.924765
+#12 DONE 0.1s
+2025-Sep-08 12:34:35.924765
+2025-Sep-08 12:34:35.924765
+#13 [production 6/7] RUN addgroup -g 1001 -S nodejs && adduser -S nodejs -u 1001
+2025-Sep-08 12:34:35.981265
+#13 DONE 0.2s
+2025-Sep-08 12:34:36.141405
+#14 [production 7/7] RUN chown -R nodejs:nodejs /app
+2025-Sep-08 12:36:22.197071
+#14 DONE 106.2s
+2025-Sep-08 12:36:22.365028
+#15 exporting to image
+2025-Sep-08 12:36:22.365028
+#15 exporting layers
+2025-Sep-08 12:36:35.989824
+#15 exporting layers 13.8s done
+2025-Sep-08 12:36:36.185171
+#15 writing image sha256:aa8283d7d827d14d4170f8df8c7ea034bf7fcea87064dfd623f293133c316547 done
+2025-Sep-08 12:36:36.185171
+#15 naming to docker.io/library/vccock4swgckwkwgk8gcsgw0:3a7596c7425157fdb90e11abbf0a939b5826ceec 0.0s done
+2025-Sep-08 12:36:36.185171
+#15 DONE 13.8s
+2025-Sep-08 12:36:36.255817
+Building docker image completed.
+2025-Sep-08 12:36:36.263777
+----------------------------------------
+2025-Sep-08 12:36:36.271157
+Rolling update started.
+2025-Sep-08 12:36:37.015151
+[CMD]: docker exec ogok0skg8go0g8go4cwossw8 bash -c 'SOURCE_COMMIT=3a7596c7425157fdb90e11abbf0a939b5826ceec COOLIFY_URL=http://vccock4swgckwkwgk8gcsgw0.159.65.106.112.sslip.io COOLIFY_FQDN=vccock4swgckwkwgk8gcsgw0.159.65.106.112.sslip.io COOLIFY_BRANCH=main  docker compose --project-name vccock4swgckwkwgk8gcsgw0 --project-directory /artifacts/ogok0skg8go0g8go4cwossw8 -f /artifacts/ogok0skg8go0g8go4cwossw8/docker-compose.yaml up --build -d'
+2025-Sep-08 12:36:37.015151
+time="2025-09-08T12:36:37Z" level=warning msg="Found orphan containers ([vccock4swgckwkwgk8gcsgw0-121050442294]) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up."
+2025-Sep-08 12:36:37.326578
+Container vccock4swgckwkwgk8gcsgw0-123416759025  Creating
+2025-Sep-08 12:36:37.508190
+vccock4swgckwkwgk8gcsgw0-123416759025 Your kernel does not support memory swappiness capabilities or the cgroup is not mounted. Memory swappiness discarded.
+2025-Sep-08 12:36:37.516029
+Container vccock4swgckwkwgk8gcsgw0-123416759025  Created
+2025-Sep-08 12:36:37.529312
+Container vccock4swgckwkwgk8gcsgw0-123416759025  Starting
+2025-Sep-08 12:36:37.798020
+Container vccock4swgckwkwgk8gcsgw0-123416759025  Started
+2025-Sep-08 12:36:37.820573
+New container started.
+2025-Sep-08 12:36:37.828719
+Custom healthcheck found, skipping default healthcheck.
+2025-Sep-08 12:36:37.840217
+Waiting for healthcheck to pass on the new container.
+2025-Sep-08 12:36:37.847002
+Waiting for the start period (5 seconds) before starting healthcheck.
+2025-Sep-08 12:36:43.128121
+[CMD]: docker inspect --format='{{json .State.Health.Status}}' vccock4swgckwkwgk8gcsgw0-123416759025
+2025-Sep-08 12:36:43.128121
+"unhealthy"
+2025-Sep-08 12:36:43.262273
+[CMD]: docker inspect --format='{{json .State.Health.Log}}' vccock4swgckwkwgk8gcsgw0-123416759025
+2025-Sep-08 12:36:43.262273
+[]
+2025-Sep-08 12:36:43.271841
+Attempt 1 of 3 | Healthcheck status: "unhealthy"
+2025-Sep-08 12:36:43.282740
+----------------------------------------
+2025-Sep-08 12:36:43.290993
+Container logs:
+2025-Sep-08 12:36:43.425258
+[CMD]: docker logs -n 100 vccock4swgckwkwgk8gcsgw0-123416759025
+2025-Sep-08 12:36:43.425258
+> rest-express@1.0.0 start
+2025-Sep-08 12:36:43.425258
+> NODE_ENV=production node dist/index.js
+2025-Sep-08 12:36:43.425258
+2025-Sep-08 12:36:43.425258
+2025-Sep-08 12:36:43.425258
+> rest-express@1.0.0 start
+2025-Sep-08 12:36:43.425258
+> NODE_ENV=production node dist/index.js
+2025-Sep-08 12:36:43.425258
+2025-Sep-08 12:36:43.425258
+2025-Sep-08 12:36:43.425258
+> rest-express@1.0.0 start
+2025-Sep-08 12:36:43.425258
+> NODE_ENV=production node dist/index.js
+2025-Sep-08 12:36:43.425258
+2025-Sep-08 12:36:43.425258
+2025-Sep-08 12:36:43.425258
+> rest-express@1.0.0 start
+2025-Sep-08 12:36:43.425258
+> NODE_ENV=production node dist/index.js
+2025-Sep-08 12:36:43.435802
+node:internal/errors:496
+2025-Sep-08 12:36:43.435802
+ErrorCaptureStackTrace(err);
+2025-Sep-08 12:36:43.435802
+^
+2025-Sep-08 12:36:43.435802
+2025-Sep-08 12:36:43.435802
+Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'vite' imported from /app/dist/index.js
+2025-Sep-08 12:36:43.435802
+at new NodeError (node:internal/errors:405:5)
+2025-Sep-08 12:36:43.435802
+at packageResolve (node:internal/modules/esm/resolve:916:9)
+2025-Sep-08 12:36:43.435802
+at moduleResolve (node:internal/modules/esm/resolve:973:20)
+2025-Sep-08 12:36:43.435802
+at defaultResolve (node:internal/modules/esm/resolve:1206:11)
+2025-Sep-08 12:36:43.435802
+at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:404:12)
+2025-Sep-08 12:36:43.435802
+at ModuleLoader.resolve (node:internal/modules/esm/loader:373:25)
+2025-Sep-08 12:36:43.435802
+at ModuleLoader.getModuleJob (node:internal/modules/esm/loader:250:38)
+2025-Sep-08 12:36:43.435802
+at ModuleWrap.<anonymous> (node:internal/modules/esm/module_job:76:39)
+2025-Sep-08 12:36:43.435802
+at link (node:internal/modules/esm/module_job:75:36) {
+2025-Sep-08 12:36:43.435802
+code: 'ERR_MODULE_NOT_FOUND'
+2025-Sep-08 12:36:43.435802
+}
+2025-Sep-08 12:36:43.435802
+2025-Sep-08 12:36:43.435802
+Node.js v18.20.8
+2025-Sep-08 12:36:43.435802
+npm notice
+2025-Sep-08 12:36:43.435802
+npm notice New major version of npm available! 10.8.2 -> 11.6.0
+2025-Sep-08 12:36:43.435802
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.6.0
+2025-Sep-08 12:36:43.435802
+npm notice To update run: npm install -g npm@11.6.0
+2025-Sep-08 12:36:43.435802
+npm notice
+2025-Sep-08 12:36:43.435802
+node:internal/errors:496
+2025-Sep-08 12:36:43.435802
+ErrorCaptureStackTrace(err);
+2025-Sep-08 12:36:43.435802
+^
+2025-Sep-08 12:36:43.435802
+2025-Sep-08 12:36:43.435802
+Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'vite' imported from /app/dist/index.js
+2025-Sep-08 12:36:43.435802
+at new NodeError (node:internal/errors:405:5)
+2025-Sep-08 12:36:43.435802
+at packageResolve (node:internal/modules/esm/resolve:916:9)
+2025-Sep-08 12:36:43.435802
+at moduleResolve (node:internal/modules/esm/resolve:973:20)
+2025-Sep-08 12:36:43.435802
+at defaultResolve (node:internal/modules/esm/resolve:1206:11)
+2025-Sep-08 12:36:43.435802
+at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:404:12)
+2025-Sep-08 12:36:43.435802
+at ModuleLoader.resolve (node:internal/modules/esm/loader:373:25)
+2025-Sep-08 12:36:43.435802
+at ModuleLoader.getModuleJob (node:internal/modules/esm/loader:250:38)
+2025-Sep-08 12:36:43.435802
+at ModuleWrap.<anonymous> (node:internal/modules/esm/module_job:76:39)
+2025-Sep-08 12:36:43.435802
+at link (node:internal/modules/esm/module_job:75:36) {
+2025-Sep-08 12:36:43.435802
+code: 'ERR_MODULE_NOT_FOUND'
+2025-Sep-08 12:36:43.435802
+}
+2025-Sep-08 12:36:43.435802
+2025-Sep-08 12:36:43.435802
+Node.js v18.20.8
+2025-Sep-08 12:36:43.435802
+node:internal/errors:496
+2025-Sep-08 12:36:43.435802
+ErrorCaptureStackTrace(err);
+2025-Sep-08 12:36:43.435802
+^
+2025-Sep-08 12:36:43.435802
+2025-Sep-08 12:36:43.435802
+Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'vite' imported from /app/dist/index.js
+2025-Sep-08 12:36:43.435802
+at new NodeError (node:internal/errors:405:5)
+2025-Sep-08 12:36:43.435802
+at packageResolve (node:internal/modules/esm/resolve:916:9)
+2025-Sep-08 12:36:43.435802
+at moduleResolve (node:internal/modules/esm/resolve:973:20)
+2025-Sep-08 12:36:43.435802
+at defaultResolve (node:internal/modules/esm/resolve:1206:11)
+2025-Sep-08 12:36:43.435802
+at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:404:12)
+2025-Sep-08 12:36:43.435802
+at ModuleLoader.resolve (node:internal/modules/esm/loader:373:25)
+2025-Sep-08 12:36:43.435802
+at ModuleLoader.getModuleJob (node:internal/modules/esm/loader:250:38)
+2025-Sep-08 12:36:43.435802
+at ModuleWrap.<anonymous> (node:internal/modules/esm/module_job:76:39)
+2025-Sep-08 12:36:43.435802
+at link (node:internal/modules/esm/module_job:75:36) {
+2025-Sep-08 12:36:43.435802
+code: 'ERR_MODULE_NOT_FOUND'
+2025-Sep-08 12:36:43.435802
+}
+2025-Sep-08 12:36:43.435802
+2025-Sep-08 12:36:43.435802
+Node.js v18.20.8
+2025-Sep-08 12:36:43.435802
+node:internal/errors:496
+2025-Sep-08 12:36:43.435802
+ErrorCaptureStackTrace(err);
+2025-Sep-08 12:36:43.435802
+^
+2025-Sep-08 12:36:43.435802
+2025-Sep-08 12:36:43.435802
+Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'vite' imported from /app/dist/index.js
+2025-Sep-08 12:36:43.435802
+at new NodeError (node:internal/errors:405:5)
+2025-Sep-08 12:36:43.435802
+at packageResolve (node:internal/modules/esm/resolve:916:9)
+2025-Sep-08 12:36:43.435802
+at moduleResolve (node:internal/modules/esm/resolve:973:20)
+2025-Sep-08 12:36:43.435802
+at defaultResolve (node:internal/modules/esm/resolve:1206:11)
+2025-Sep-08 12:36:43.435802
+at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:404:12)
+2025-Sep-08 12:36:43.435802
+at ModuleLoader.resolve (node:internal/modules/esm/loader:373:25)
+2025-Sep-08 12:36:43.435802
+at ModuleLoader.getModuleJob (node:internal/modules/esm/loader:250:38)
+2025-Sep-08 12:36:43.435802
+at ModuleWrap.<anonymous> (node:internal/modules/esm/module_job:76:39)
+2025-Sep-08 12:36:43.435802
+at link (node:internal/modules/esm/module_job:75:36) {
+2025-Sep-08 12:36:43.435802
+code: 'ERR_MODULE_NOT_FOUND'
+2025-Sep-08 12:36:43.435802
+}
+2025-Sep-08 12:36:43.435802
+2025-Sep-08 12:36:43.435802
+Node.js v18.20.8
+2025-Sep-08 12:36:43.444484
+----------------------------------------
+2025-Sep-08 12:36:43.456928
+Removing old containers.
+2025-Sep-08 12:36:43.468492
+----------------------------------------
+2025-Sep-08 12:36:43.475113
+WARNING: Dockerfile or Docker Image based deployment detected. The healthcheck needs a curl or wget command to check the health of the application. Please make sure that it is available in the image or turn off healthcheck on Coolify's UI.
+2025-Sep-08 12:36:43.482661
+----------------------------------------
+2025-Sep-08 12:36:43.489354
+New container is not healthy, rolling back to the old container.
+2025-Sep-08 12:36:43.616583
+[CMD]: docker stop --time=30 vccock4swgckwkwgk8gcsgw0-123416759025
+2025-Sep-08 12:36:43.616583
+Flag --time has been deprecated, use --timeout instead
+2025-Sep-08 12:36:43.657548
+vccock4swgckwkwgk8gcsgw0-123416759025
+2025-Sep-08 12:36:43.808011
+[CMD]: docker rm -f vccock4swgckwkwgk8gcsgw0-123416759025
+2025-Sep-08 12:36:43.808011
+vccock4swgckwkwgk8gcsgw0-123416759025
+2025-Sep-08 12:36:43.820014
+Rolling update completed.
+2025-Sep-08 12:36:44.255229
+Gracefully shutting down build container: ogok0skg8go0g8go4cwossw8
+2025-Sep-08 12:36:44.378355
+[CMD]: docker stop --time=30 ogok0skg8go0g8go4cwossw8
+2025-Sep-08 12:36:44.378355
+Flag --time has been deprecated, use --timeout instead
+2025-Sep-08 12:36:44.691619
+ogok0skg8go0g8go4cwossw8
+2025-Sep-08 12:36:44.821436
+[CMD]: docker rm -f ogok0skg8go0g8go4cwossw8
+2025-Sep-08 12:36:44.821436
+Error response from daemon: No such container: ogok0
