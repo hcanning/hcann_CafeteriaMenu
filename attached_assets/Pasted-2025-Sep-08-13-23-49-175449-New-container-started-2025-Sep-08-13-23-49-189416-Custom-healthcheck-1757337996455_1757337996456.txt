@@ -1,0 +1,241 @@
+2025-Sep-08 13:23:49.175449
+New container started.
+2025-Sep-08 13:23:49.189416
+Custom healthcheck found, skipping default healthcheck.
+2025-Sep-08 13:23:49.197730
+Waiting for healthcheck to pass on the new container.
+2025-Sep-08 13:23:49.202554
+Waiting for the start period (60 seconds) before starting healthcheck.
+2025-Sep-08 13:24:48.741368
+[CMD]: docker inspect --format='{{json .State.Health.Status}}' vccock4swgckwkwgk8gcsgw0-132324005713
+2025-Sep-08 13:24:48.741368
+"unhealthy"
+2025-Sep-08 13:24:49.098441
+[CMD]: docker inspect --format='{{json .State.Health.Log}}' vccock4swgckwkwgk8gcsgw0-132324005713
+2025-Sep-08 13:24:49.098441
+[]
+2025-Sep-08 13:24:49.136086
+Attempt 1 of 3 | Healthcheck status: "unhealthy"
+2025-Sep-08 13:24:49.145368
+----------------------------------------
+2025-Sep-08 13:24:49.153203
+Container logs:
+2025-Sep-08 13:24:49.511072
+[CMD]: docker logs -n 100 vccock4swgckwkwgk8gcsgw0-132324005713
+2025-Sep-08 13:24:49.511072
+at packageResolve (node:internal/modules/esm/resolve:916:9)
+2025-Sep-08 13:24:49.551324
+> rest-express@1.0.0 start
+2025-Sep-08 13:24:49.551324
+> NODE_ENV=production node dist/index.js
+2025-Sep-08 13:24:49.551324
+2025-Sep-08 13:24:49.551324
+2025-Sep-08 13:24:49.551324
+> rest-express@1.0.0 start
+2025-Sep-08 13:24:49.551324
+> NODE_ENV=production node dist/index.js
+2025-Sep-08 13:24:49.551324
+2025-Sep-08 13:24:49.551324
+2025-Sep-08 13:24:49.551324
+> rest-express@1.0.0 start
+2025-Sep-08 13:24:49.551324
+> NODE_ENV=production node dist/index.js
+2025-Sep-08 13:24:49.551324
+2025-Sep-08 13:24:49.551324
+2025-Sep-08 13:24:49.551324
+> rest-express@1.0.0 start
+2025-Sep-08 13:24:49.551324
+> NODE_ENV=production node dist/index.js
+2025-Sep-08 13:24:49.558250
+at moduleResolve (node:internal/modules/esm/resolve:973:20)
+2025-Sep-08 13:24:49.558250
+at defaultResolve (node:internal/modules/esm/resolve:1206:11)
+2025-Sep-08 13:24:49.558250
+at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:404:12)
+2025-Sep-08 13:24:49.558250
+at ModuleLoader.resolve (node:internal/modules/esm/loader:373:25)
+2025-Sep-08 13:24:49.558250
+at ModuleLoader.getModuleJob (node:internal/modules/esm/loader:250:38)
+2025-Sep-08 13:24:49.558250
+at ModuleWrap.<anonymous> (node:internal/modules/esm/module_job:76:39)
+2025-Sep-08 13:24:49.558250
+at link (node:internal/modules/esm/module_job:75:36) {
+2025-Sep-08 13:24:49.558250
+code: 'ERR_MODULE_NOT_FOUND'
+2025-Sep-08 13:24:49.558250
+}
+2025-Sep-08 13:24:49.558250
+2025-Sep-08 13:24:49.558250
+Node.js v18.20.8
+2025-Sep-08 13:24:49.558250
+node:internal/errors:496
+2025-Sep-08 13:24:49.558250
+ErrorCaptureStackTrace(err);
+2025-Sep-08 13:24:49.558250
+^
+2025-Sep-08 13:24:49.558250
+2025-Sep-08 13:24:49.558250
+Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'vite' imported from /app/dist/index.js
+2025-Sep-08 13:24:49.558250
+at new NodeError (node:internal/errors:405:5)
+2025-Sep-08 13:24:49.558250
+at packageResolve (node:internal/modules/esm/resolve:916:9)
+2025-Sep-08 13:24:49.558250
+at moduleResolve (node:internal/modules/esm/resolve:973:20)
+2025-Sep-08 13:24:49.558250
+at defaultResolve (node:internal/modules/esm/resolve:1206:11)
+2025-Sep-08 13:24:49.558250
+at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:404:12)
+2025-Sep-08 13:24:49.558250
+at ModuleLoader.resolve (node:internal/modules/esm/loader:373:25)
+2025-Sep-08 13:24:49.558250
+at ModuleLoader.getModuleJob (node:internal/modules/esm/loader:250:38)
+2025-Sep-08 13:24:49.558250
+at ModuleWrap.<anonymous> (node:internal/modules/esm/module_job:76:39)
+2025-Sep-08 13:24:49.558250
+at link (node:internal/modules/esm/module_job:75:36) {
+2025-Sep-08 13:24:49.558250
+code: 'ERR_MODULE_NOT_FOUND'
+2025-Sep-08 13:24:49.558250
+}
+2025-Sep-08 13:24:49.558250
+2025-Sep-08 13:24:49.558250
+Node.js v18.20.8
+2025-Sep-08 13:24:49.558250
+node:internal/errors:496
+2025-Sep-08 13:24:49.558250
+ErrorCaptureStackTrace(err);
+2025-Sep-08 13:24:49.558250
+^
+2025-Sep-08 13:24:49.558250
+2025-Sep-08 13:24:49.558250
+Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'vite' imported from /app/dist/index.js
+2025-Sep-08 13:24:49.558250
+at new NodeError (node:internal/errors:405:5)
+2025-Sep-08 13:24:49.558250
+at packageResolve (node:internal/modules/esm/resolve:916:9)
+2025-Sep-08 13:24:49.558250
+at moduleResolve (node:internal/modules/esm/resolve:973:20)
+2025-Sep-08 13:24:49.558250
+at defaultResolve (node:internal/modules/esm/resolve:1206:11)
+2025-Sep-08 13:24:49.558250
+at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:404:12)
+2025-Sep-08 13:24:49.558250
+at ModuleLoader.resolve (node:internal/modules/esm/loader:373:25)
+2025-Sep-08 13:24:49.558250
+at ModuleLoader.getModuleJob (node:internal/modules/esm/loader:250:38)
+2025-Sep-08 13:24:49.558250
+at ModuleWrap.<anonymous> (node:internal/modules/esm/module_job:76:39)
+2025-Sep-08 13:24:49.558250
+at link (node:internal/modules/esm/module_job:75:36) {
+2025-Sep-08 13:24:49.558250
+code: 'ERR_MODULE_NOT_FOUND'
+2025-Sep-08 13:24:49.558250
+}
+2025-Sep-08 13:24:49.558250
+2025-Sep-08 13:24:49.558250
+Node.js v18.20.8
+2025-Sep-08 13:24:49.558250
+node:internal/errors:496
+2025-Sep-08 13:24:49.558250
+ErrorCaptureStackTrace(err);
+2025-Sep-08 13:24:49.558250
+^
+2025-Sep-08 13:24:49.558250
+2025-Sep-08 13:24:49.558250
+Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'vite' imported from /app/dist/index.js
+2025-Sep-08 13:24:49.558250
+at new NodeError (node:internal/errors:405:5)
+2025-Sep-08 13:24:49.558250
+at packageResolve (node:internal/modules/esm/resolve:916:9)
+2025-Sep-08 13:24:49.558250
+at moduleResolve (node:internal/modules/esm/resolve:973:20)
+2025-Sep-08 13:24:49.558250
+at defaultResolve (node:internal/modules/esm/resolve:1206:11)
+2025-Sep-08 13:24:49.558250
+at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:404:12)
+2025-Sep-08 13:24:49.558250
+at ModuleLoader.resolve (node:internal/modules/esm/loader:373:25)
+2025-Sep-08 13:24:49.558250
+at ModuleLoader.getModuleJob (node:internal/modules/esm/loader:250:38)
+2025-Sep-08 13:24:49.558250
+at ModuleWrap.<anonymous> (node:internal/modules/esm/module_job:76:39)
+2025-Sep-08 13:24:49.558250
+at link (node:internal/modules/esm/module_job:75:36) {
+2025-Sep-08 13:24:49.558250
+code: 'ERR_MODULE_NOT_FOUND'
+2025-Sep-08 13:24:49.558250
+}
+2025-Sep-08 13:24:49.558250
+2025-Sep-08 13:24:49.558250
+Node.js v18.20.8
+2025-Sep-08 13:24:49.558250
+node:internal/errors:496
+2025-Sep-08 13:24:49.558250
+ErrorCaptureStackTrace(err);
+2025-Sep-08 13:24:49.558250
+^
+2025-Sep-08 13:24:49.558250
+2025-Sep-08 13:24:49.558250
+Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'vite' imported from /app/dist/index.js
+2025-Sep-08 13:24:49.558250
+at new NodeError (node:internal/errors:405:5)
+2025-Sep-08 13:24:49.558250
+at packageResolve (node:internal/modules/esm/resolve:916:9)
+2025-Sep-08 13:24:49.558250
+at moduleResolve (node:internal/modules/esm/resolve:973:20)
+2025-Sep-08 13:24:49.558250
+at defaultResolve (node:internal/modules/esm/resolve:1206:11)
+2025-Sep-08 13:24:49.558250
+at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:404:12)
+2025-Sep-08 13:24:49.558250
+at ModuleLoader.resolve (node:internal/modules/esm/loader:373:25)
+2025-Sep-08 13:24:49.558250
+at ModuleLoader.getModuleJob (node:internal/modules/esm/loader:250:38)
+2025-Sep-08 13:24:49.558250
+at ModuleWrap.<anonymous> (node:internal/modules/esm/module_job:76:39)
+2025-Sep-08 13:24:49.558250
+at link (node:internal/modules/esm/module_job:75:36) {
+2025-Sep-08 13:24:49.558250
+code: 'ERR_MODULE_NOT_FOUND'
+2025-Sep-08 13:24:49.558250
+}
+2025-Sep-08 13:24:49.558250
+2025-Sep-08 13:24:49.558250
+Node.js v18.20.8
+2025-Sep-08 13:24:49.590890
+----------------------------------------
+2025-Sep-08 13:24:49.608820
+Removing old containers.
+2025-Sep-08 13:24:49.614808
+----------------------------------------
+2025-Sep-08 13:24:49.650276
+WARNING: Dockerfile or Docker Image based deployment detected. The healthcheck needs a curl or wget command to check the health of the application. Please make sure that it is available in the image or turn off healthcheck on Coolify's UI.
+2025-Sep-08 13:24:49.721211
+----------------------------------------
+2025-Sep-08 13:24:49.813794
+New container is not healthy, rolling back to the old container.
+2025-Sep-08 13:24:50.144879
+[CMD]: docker stop --time=30 vccock4swgckwkwgk8gcsgw0-132324005713
+2025-Sep-08 13:24:50.144879
+Flag --time has been deprecated, use --timeout instead
+2025-Sep-08 13:24:50.164314
+vccock4swgckwkwgk8gcsgw0-132324005713
+2025-Sep-08 13:24:50.515684
+[CMD]: docker rm -f vccock4swgckwkwgk8gcsgw0-132324005713
+2025-Sep-08 13:24:50.515684
+vccock4swgckwkwgk8gcsgw0-132324005713
+2025-Sep-08 13:24:50.523877
+Rolling update completed.
+2025-Sep-08 13:24:51.479407
+Gracefully shutting down build container: vsc4ow4808o0wosc8wg4c0so
+2025-Sep-08 13:24:51.841462
+[CMD]: docker stop --time=30 vsc4ow4808o0wosc8wg4c0so
+2025-Sep-08 13:24:51.841462
+Flag --time has been deprecated, use --timeout instead
+2025-Sep-08 13:24:52.053803
+vsc4ow4808o0wosc8wg4c0so
+2025-Sep-08 13:24:52.530890
+[CMD]: docker rm -f vsc4ow4808o0wosc8wg4c0so
+2025-Sep-08 13:24:52.530890
+Error response from daemon: No such container: vsc4ow4808o0wosc8wg4c0so
