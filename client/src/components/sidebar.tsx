@@ -1,8 +1,6 @@
-import { useState } from "react";
-import { Search, Menu, X } from "lucide-react";
+import { Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Filters } from "@/pages/home";
 
 interface SidebarProps {
@@ -67,7 +65,7 @@ function SidebarContent({ selectedDay, onDayChange, search, onSearchChange, filt
   };
 
   return (
-    <div className="h-full bg-card border-r border-border p-6 overflow-y-auto">
+    <div className="h-screen bg-card border-r border-border p-6 overflow-y-auto">
       <div className="space-y-6">
         {/* Logo */}
         <div className="flex items-center space-x-2">
@@ -169,29 +167,9 @@ function SidebarContent({ selectedDay, onDayChange, search, onSearchChange, filt
 }
 
 export default function Sidebar(props: SidebarProps) {
-  const [mobileOpen, setMobileOpen] = useState(false);
-
   return (
-    <>
-      {/* Mobile Sidebar */}
-      <div className="lg:hidden">
-        <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
-          <SheetTrigger asChild>
-            <Button variant="outline" size="sm" className="mb-4">
-              <Menu className="h-4 w-4 mr-2" />
-              Filters & Days
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="left" className="w-80 p-0">
-            <SidebarContent {...props} />
-          </SheetContent>
-        </Sheet>
-      </div>
-
-      {/* Desktop Sidebar */}
-      <div className="hidden lg:block w-80 flex-shrink-0">
-        <SidebarContent {...props} />
-      </div>
-    </>
+    <div className="w-80 flex-shrink-0">
+      <SidebarContent {...props} />
+    </div>
   );
 }

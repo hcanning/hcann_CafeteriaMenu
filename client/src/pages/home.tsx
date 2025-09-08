@@ -101,12 +101,7 @@ export default function Home() {
         <header className="bg-card border-b border-border sticky top-0 z-10">
           <div className="px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-16">
-              <div className="lg:hidden">
-                <h1 className="text-lg font-bold">Campus Eats</h1>
-              </div>
-              <div className="hidden lg:block">
-                <h1 className="text-xl font-bold">{selectedDay}'s Menu</h1>
-              </div>
+              <h1 className="text-xl font-bold">{selectedDay}'s Menu</h1>
               <div className="flex items-center space-x-4">
                 <span className="text-sm text-muted-foreground" data-testid="meals-count">
                   {filteredMeals.length} meals available
@@ -126,9 +121,6 @@ export default function Home() {
 
         <div className="px-4 sm:px-6 lg:px-8 py-8">
           <section className="w-full">
-            <div className="lg:hidden mb-6">
-              <h2 className="text-2xl font-bold">{selectedDay}'s Menu</h2>
-            </div>
 
             {isLoading ? (
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
