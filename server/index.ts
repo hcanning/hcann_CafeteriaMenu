@@ -64,28 +64,18 @@ app.get('/api/health', (req, res) => {
     throw err;
   });
 
-  // Serve static files in production
-  if (process.env.NODE_ENV === "production") {
-    const distPath = path.resolve(import.meta.dirname, "public");
+  // Serve static files (built by vite during build process)
+  const distPath = path.resolve(import.meta.dirname, "public");
+  
+  if (fs.existsSync(distPath)) {
+    app.use(express.static(distPath));
     
-    if (fs.existsSync(distPath)) {
-      app.use(express.static(distPath));
-      
-      // Fall through to index.html for SPA routes
-      app.use("*", (_req, res) => {
-        res.sendFile(path.resolve(distPath, "index.html"));
-      });
-    } else {
-      log("Warning: dist/public directory not found");
-    }
+    // Fall through to index.html for SPA routes
+    app.use("*", (_req, res) => {
+      res.sendFile(path.resolve(distPath, "index.html"));
+    });
   } else {
-    // Development mode - use vite setup
-    try {
-      const { setupVite } = await import("./vite");
-      await setupVite(app, server);
-    } catch (error) {
-      log("Failed to setup vite, falling back to static serve");
-    }
+    log("Warning: dist/public directory not found - run 'npm run build' first");
   }
 
   // ALWAYS serve the app on port 3000 for production (Coolify expects this)
