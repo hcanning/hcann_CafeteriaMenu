@@ -19,9 +19,6 @@ RUN npm run build
 # Production stage
 FROM node:18-alpine AS production
 
-# Install curl for health checks
-RUN apk add --no-cache curl
-
 # Set working directory
 WORKDIR /app
 
@@ -47,10 +44,6 @@ ENV PORT=3000
 
 # Expose port
 EXPOSE 3000
-
-# Simple health check for Coolify
-HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
-  CMD curl -f http://localhost:3000/api/health || exit 1
 
 # Start the application
 CMD ["npm", "start"]
