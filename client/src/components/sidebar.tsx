@@ -28,10 +28,10 @@ const dietaryOptions = [
 ];
 
 function SidebarContent({ selectedDay, onDayChange, search, onSearchChange, filters, onFiltersChange }: SidebarProps) {
-  const handlePriceChange = (newPriceRange: [number, number]) => {
+  const handlePriceChange = (newMaxPrice: number) => {
     onFiltersChange({
       ...filters,
-      priceRange: newPriceRange,
+      maxPrice: newMaxPrice,
     });
   };
 
@@ -49,7 +49,7 @@ function SidebarContent({ selectedDay, onDayChange, search, onSearchChange, filt
   const clearAllFilters = () => {
     onFiltersChange({
       search: "",
-      priceRange: [5, 30],
+      maxPrice: 30,
       dietaryOptions: [],
     });
     onSearchChange("");
@@ -105,20 +105,19 @@ function SidebarContent({ selectedDay, onDayChange, search, onSearchChange, filt
 
         {/* Price Filter */}
         <div className="space-y-3">
-          <h2 className="text-sm font-medium text-foreground">Price Range</h2>
+          <h2 className="text-sm font-medium text-foreground">Maximum Price</h2>
           <div className="space-y-2">
             <div className="flex justify-between text-sm text-muted-foreground">
-              <span>${filters.priceRange[0]}</span>
-              <span>${filters.priceRange[1]}</span>
+              <span>$0 - ${filters.maxPrice}</span>
             </div>
             <Slider
-              value={filters.priceRange}
-              onValueChange={(value) => handlePriceChange(value as [number, number])}
+              value={[filters.maxPrice]}
+              onValueChange={(value) => handlePriceChange(value[0] || 30)}
               min={5}
               max={30}
               step={1}
               className="w-full"
-              data-testid="slider-price-range"
+              data-testid="slider-max-price"
             />
             <div className="flex justify-between text-xs text-muted-foreground">
               <span>$5</span>
