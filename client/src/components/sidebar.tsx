@@ -108,20 +108,20 @@ function SidebarContent({ selectedDay, onDayChange, search, onSearchChange, filt
           <h2 className="text-sm font-medium text-foreground">Maximum Price</h2>
           <div className="space-y-2">
             <div className="flex justify-between text-sm text-muted-foreground">
-              <span>$0 - ${filters.maxPrice}</span>
+              <span>$0 - ${filters.maxPrice.toFixed(2)}</span>
             </div>
             <Slider
               value={[filters.maxPrice]}
               onValueChange={(value) => handlePriceChange(value[0] || 30)}
               min={5}
               max={30}
-              step={1}
+              step={0.5}
               className="w-full"
               data-testid="slider-max-price"
             />
             <div className="flex justify-between text-xs text-muted-foreground">
-              <span>$5</span>
-              <span>$30</span>
+              <span>$5.00</span>
+              <span>$30.00</span>
             </div>
           </div>
         </div>
