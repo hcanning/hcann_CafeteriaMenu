@@ -1,6 +1,18 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
-import { setupVite, serveStatic, log } from "./vite";
+import path from "path";
+import fs from "fs";
+
+// Simple logging function without vite dependency
+function log(message: string, source = "express") {
+  const formattedTime = new Date().toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: true,
+  });
+  console.log(`${formattedTime} [${source}] ${message}`);
+}
 
 const app = express();
 app.use(express.json());
@@ -36,6 +48,11 @@ app.use((req, res, next) => {
   next();
 });
 
+// Health check endpoint for Coolify
+app.get('/api/health', (req, res) => {
+  res.status(200).send('OK');
+});
+
 (async () => {
   const server = await registerRoutes(app);
 
@@ -47,20 +64,34 @@ app.use((req, res, next) => {
     throw err;
   });
 
-  // importantly only setup vite in development and after
-  // setting up all the other routes so the catch-all route
-  // doesn't interfere with the other routes
-  if (app.get("env") === "development") {
-    await setupVite(app, server);
+  // Serve static files in production
+  if (process.env.NODE_ENV === "production") {
+    const distPath = path.resolve(import.meta.dirname, "public");
+    
+    if (fs.existsSync(distPath)) {
+      app.use(express.static(distPath));
+      
+      // Fall through to index.html for SPA routes
+      app.use("*", (_req, res) => {
+        res.sendFile(path.resolve(distPath, "index.html"));
+      });
+    } else {
+      log("Warning: dist/public directory not found");
+    }
   } else {
-    serveStatic(app);
+    // Development mode - use vite setup
+    try {
+      const { setupVite } = await import("./vite");
+      await setupVite(app, server);
+    } catch (error) {
+      log("Failed to setup vite, falling back to static serve");
+    }
   }
 
-  // ALWAYS serve the app on the port specified in the environment variable PORT
-  // Other ports are firewalled. Default to 5000 if not specified.
-  // this serves both the API and the client.
-  // It is the only port that is not firewalled.
-  const port = parseInt(process.env.PORT || '5000', 10);
+  // ALWAYS serve the app on port 3000 for production (Coolify expects this)
+  // Use port 5000 for development
+  const port = process.env.NODE_ENV === "production" ? 3000 : parseInt(process.env.PORT || '5000', 10);
+  
   server.listen({
     port,
     host: "0.0.0.0",
