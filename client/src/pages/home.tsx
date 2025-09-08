@@ -11,7 +11,7 @@ import { Settings } from "lucide-react";
 
 export interface Filters {
   search: string;
-  priceRanges: string[];
+  priceRange: [number, number];
   dietaryOptions: string[];
 }
 
@@ -22,7 +22,7 @@ export default function Home() {
   const [search, setSearch] = useState("");
   const [filters, setFilters] = useState<Filters>({
     search: "",
-    priceRanges: [],
+    priceRange: [5, 30],
     dietaryOptions: [],
   });
 
@@ -40,18 +40,9 @@ export default function Home() {
     }
 
     // Price filter
-    if (filters.priceRanges.length > 0) {
-      const price = parseFloat(meal.price);
-      const matchesPrice = filters.priceRanges.some(range => {
-        switch (range) {
-          case "under-8": return price < 8;
-          case "8-12": return price >= 8 && price <= 12;
-          case "12-16": return price > 12 && price <= 16;
-          case "over-16": return price > 16;
-          default: return false;
-        }
-      });
-      if (!matchesPrice) return false;
+    const price = parseFloat(meal.price);
+    if (price < filters.priceRange[0] || price > filters.priceRange[1]) {
+      return false;
     }
 
     // Dietary filter

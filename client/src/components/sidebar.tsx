@@ -1,6 +1,7 @@
 import { Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Slider } from "@/components/ui/slider";
 import { Filters } from "@/pages/home";
 
 interface SidebarProps {
@@ -14,12 +15,6 @@ interface SidebarProps {
 
 const weekDays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
-const priceRanges = [
-  { id: "under-8", label: "Under $8" },
-  { id: "8-12", label: "$8 - $12" },
-  { id: "12-16", label: "$12 - $16" },
-  { id: "over-16", label: "Over $16" },
-];
 
 const dietaryOptions = [
   { id: "vegetarian", label: "Vegetarian" },
@@ -33,14 +28,10 @@ const dietaryOptions = [
 ];
 
 function SidebarContent({ selectedDay, onDayChange, search, onSearchChange, filters, onFiltersChange }: SidebarProps) {
-  const handlePriceChange = (priceId: string, checked: boolean) => {
-    const newPriceRanges = checked
-      ? [...filters.priceRanges, priceId]
-      : filters.priceRanges.filter(id => id !== priceId);
-    
+  const handlePriceChange = (newPriceRange: [number, number]) => {
     onFiltersChange({
       ...filters,
-      priceRanges: newPriceRanges,
+      priceRange: newPriceRange,
     });
   };
 
@@ -58,7 +49,7 @@ function SidebarContent({ selectedDay, onDayChange, search, onSearchChange, filt
   const clearAllFilters = () => {
     onFiltersChange({
       search: "",
-      priceRanges: [],
+      priceRange: [5, 30],
       dietaryOptions: [],
     });
     onSearchChange("");
@@ -113,21 +104,26 @@ function SidebarContent({ selectedDay, onDayChange, search, onSearchChange, filt
         </div>
 
         {/* Price Filter */}
-        <div className="space-y-2">
+        <div className="space-y-3">
           <h2 className="text-sm font-medium text-foreground">Price Range</h2>
           <div className="space-y-2">
-            {priceRanges.map((range) => (
-              <label key={range.id} className="flex items-center space-x-2">
-                <input
-                  type="checkbox"
-                  checked={filters.priceRanges.includes(range.id)}
-                  onChange={(e) => handlePriceChange(range.id, e.target.checked)}
-                  className="rounded border-border"
-                  data-testid={`checkbox-price-${range.id}`}
-                />
-                <span className="text-sm text-foreground">{range.label}</span>
-              </label>
-            ))}
+            <div className="flex justify-between text-sm text-muted-foreground">
+              <span>${filters.priceRange[0]}</span>
+              <span>${filters.priceRange[1]}</span>
+            </div>
+            <Slider
+              value={filters.priceRange}
+              onValueChange={(value) => handlePriceChange(value as [number, number])}
+              min={5}
+              max={30}
+              step={1}
+              className="w-full"
+              data-testid="slider-price-range"
+            />
+            <div className="flex justify-between text-xs text-muted-foreground">
+              <span>$5</span>
+              <span>$30</span>
+            </div>
           </div>
         </div>
 
