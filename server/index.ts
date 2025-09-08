@@ -1,3 +1,5 @@
+// IMPORTANT: Never statically import Vite or server/vite.ts in this file.
+// Only use dynamic import inside development mode block below.
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import path from "path";
